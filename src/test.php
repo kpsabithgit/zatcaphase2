@@ -1,10 +1,14 @@
 <?php
 
 use Sabith\Zatcaphase2\Invoice;
+
+class Test{
 // Example Usage
-$invoice = new Invoice();
 
 // Stackcue Section
+public static function run(){
+$invoice = new Invoice();
+
 $invoice->stackcue()
         ->documentType('StandardInvoice')
         ->stackcueComplianceIdentifier('d1f4f24e-de77-4a93-ac74-11e9759b82cc')
@@ -107,5 +111,6 @@ $invoice->addLineItem()
         ->lineChargePercentage(10)
         ->baseAmountForLineCharge(11);
 
-echo ($invoice->toJson());
-
+return ($invoice->toJson());
+}
+}
