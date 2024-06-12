@@ -1,4 +1,5 @@
 <?php
+namespace Sabith\Zatcaphase2;
 
 use Sabith\Zatcaphase2\Invoice;
 
