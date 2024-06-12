@@ -1,0 +1,16 @@
+{
+    "name": "sabith/zatcaphase2",
+    "description": "Easly connect to ZATCA phase 2 using stackcue API",
+    "autoload": {
+        "psr-4": {
+            "Sabith\\Zatcaphase2\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "kpsabithgit",
+            "email": "91092418+kpsabithgit@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}
