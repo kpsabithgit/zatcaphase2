@@ -65,7 +65,7 @@ class Invoice {
 
     public function __call($name, $arguments) {
         // Check for specific fields that need to retain their exact casing
-        $exactFields = ['PIHvalue', 'ReferanceInvoiceID'];
+        $exactFields = ['PIHvalue'];
         if (in_array($name, $exactFields)) {
             $field = $name;
         } else {
@@ -78,6 +78,10 @@ class Invoice {
 
     public function toJson() {
         return json_encode($this->data, JSON_PRETTY_PRINT);
+    }
+
+    public function toArray() {
+        return $this->data;
     }
 
     // Document Allowance Methods
@@ -254,3 +258,6 @@ class Invoice {
         return $this;
     }
 }
+
+
+

@@ -2,12 +2,34 @@
 namespace Sabith\Zatcaphase2;
 
 use Sabith\Zatcaphase2\Invoice;
+use Sabith\Zatcaphase2\ComplianceCSID;
 
 class Test{
 // Example Usage
 
 // Stackcue Section
 public static function run(){
+
+//compliancecsid
+
+$compliancecsid = new ComplianceCSID;
+$compliancecsid->email("sales@jeem.net.sa")
+->location("Dammam")
+->companyName("Jeem IT")
+->vatNumber("310565828400003")
+->isRequiredSimplifiedDoc(true)
+->isRequiredStandardDoc(true)
+->deviceSerialNumber1("stackcue")
+->deviceSerialNumber2("ESGUnit")
+->deviceSerialNumber3("9sfgbdb02-665")
+->regAddress("KHOBAR")
+->businessCategory("Software and IT")
+->otp("272482");
+
+return $compliancecsid->sendAPIrequest();
+
+
+    /*
 $invoice = new Invoice();
 
 $invoice->stackcue()
@@ -24,7 +46,7 @@ $invoice->invoice()
         ->actualDeliveryDate('2022-09-07')
         ->paymentMeansCode(10)
         ->PIHvalue('NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==')
-        ->ReferanceInvoiceID('SMI00023')
+        ->referanceInvoiceID('SMI00023')
         ->reasonForCreditOrDebitNote('Item Returned');
 
 // Seller Section
@@ -73,7 +95,7 @@ $invoice->addPrePaidDocument()
         ->prePaymentDocumentId('123')
         ->prePaymentDocumentIssueDate('2021-07-31')
         ->prePaymentDocumentIssueTime('12:28:17')
-        ->prePaymentCategoryAmount('S', 1.00)
+        ->prePaymentCategoryAmount('S', 2.00)
         ->prePaymentCategoryAmount('E', 0.00)
         ->prePaymentCategoryAmount('Z', 0.00)
         ->prePaymentCategoryAmount('O', 0.00);
@@ -112,6 +134,10 @@ $invoice->addLineItem()
         ->lineChargePercentage(10)
         ->baseAmountForLineCharge(11);
 
-return ($invoice->toJson());
+return ($invoice->toArray());
+*/
+
+
 }
+
 }
