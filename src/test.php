@@ -21,12 +21,12 @@ $compliancecsid->email("sales@jeem.net.sa")
     ->businessCategory("Software and IT")
     ->otp("272482");
 
-echo $compliancecsid->sendAPIrequest();
+echo $compliancecsid->sendAPIrequest(); //it will display the compliance csid if API call is success.
 
 echo "<br><br> Generting Production CSID<br>";
 //stackcueComplianceIdentifier from above method used here
-$stackcueComplianceIdentifier = '74e88cd4-fc4a-46f9-afee-b2c4cb4d034a';
-$productioncsid = ProductionCSID::sendAPIrequest($stackcueComplianceIdentifier);
+$stackcueComplianceIdentifier = '74e88cd4-fc4a-46f9-afee-b2c4cb4d034a'; 
+$productioncsid = ProductionCSID::sendAPIrequest($stackcueComplianceIdentifier);//it will display the production csid if API call is success.
 echo $productioncsid;
 
 echo "<br><br> Generting Invoice<br>";
@@ -35,8 +35,8 @@ $invoice = new Invoice();
 
 $invoice->stackcue()
     ->documentType('StandardInvoice')
-    ->stackcueComplianceIdentifier('d1f4f24e-de77-4a93-ac74-11e9759b82cc')
-    ->stackcueProductionIdentifier('80df268b-24ea-4fa5-904e-f949d155057d');
+    ->stackcueComplianceIdentifier('d1f4f24e-de77-4a93-ac74-11e9759b82cc') //from above compliancecsid
+    ->stackcueProductionIdentifier('80df268b-24ea-4fa5-904e-f949d155057d'); //from above productioncsid 
 
 // Invoice Section
 $invoice->invoice()
@@ -47,8 +47,8 @@ $invoice->invoice()
     ->actualDeliveryDate('2022-09-07')
     ->paymentMeansCode(10)
     ->PIHvalue('NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==')
-    ->referanceInvoiceID('SMI00023')
-    ->reasonForCreditOrDebitNote('Item Returned');
+    ->referanceInvoiceID('SMI00023') //required only for debit/credit note
+    ->reasonForCreditOrDebitNote('Item Returned'); //required only for debit/credit note
 
 // Seller Section
 $invoice->seller()
@@ -101,16 +101,7 @@ $invoice->addPrePaidDocument()
     ->prePaymentCategoryAmount('Z', 0.00)
     ->prePaymentCategoryAmount('O', 0.00);
 
-$invoice->addPrePaidDocument()
-    ->prePaymentDocumentId('124')
-    ->prePaymentDocumentIssueDate('2021-07-31')
-    ->prePaymentDocumentIssueTime('12:28:17')
-    ->prePaymentCategoryAmount('S', 1.00)
-    ->prePaymentCategoryAmount('E', 0.00)
-    ->prePaymentCategoryAmount('Z', 0.00)
-    ->prePaymentCategoryAmount('O', 0.00);
-
-// Line Item
+// Line Item (repeat for all lines in the invoice)
 $invoice->addLineItem()
     ->lineID(1)
     ->invoicedQuantity(1)
