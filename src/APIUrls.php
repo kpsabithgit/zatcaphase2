@@ -1,11 +1,15 @@
 <?php
 namespace Sabith\Zatcaphase2;
 
-Class APIUrls{
-    public static function get($key){
+//
+
+class APIUrls
+{
+    public static function get($key)
+    {
         $data = [
-            'Productioncsid'=>'productioncsid',
-            'Compliancecsid'=>'compliance',
+            'Productioncsid' => 'productioncsid',
+            'Compliancecsid' => 'compliance',
             'Simplifiedcompliance' => 'simplified-compliance',
             'SimplifiedInvoice' => 'simplified-invoice',
             'SimplifiedCreditNote' => 'simplified-creditnote',
@@ -13,9 +17,11 @@ Class APIUrls{
             'StandardCompliance' => 'standard-compliance',
             'StandardInvoice' => 'standard-invoice',
             'StandardCreditnote' => 'standard-creditnote',
-            'StandardDebitnote' => 'standard-debitnote'
+            'StandardDebitnote' => 'standard-debitnote',
         ];
-        $url =  env('STACKCUE_API_END_POINT_BASE_URL').'/'.'api'.'/'.$data[$key];
+        $baseUrl = EnvVariables::get('STACKCUE_API_END_POINT_BASE_URL');
+        $url = $baseUrl . '/api/' . $data[$key];
         return $url;
     }
+
 }

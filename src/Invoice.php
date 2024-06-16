@@ -1,7 +1,8 @@
 <?php
 namespace Sabith\Zatcaphase2;
 
-class Invoice {
+class Invoice
+{
     private $data = [
         'Stackcue' => [],
         'Invoice' => [],
@@ -10,7 +11,7 @@ class Invoice {
         'DocumentAllowances' => [],
         'DocumentCharges' => [],
         'prePaidDocuments' => [],
-        'Lineitems' => []
+        'Lineitems' => [],
     ];
 
     private $currentSection;
@@ -19,51 +20,60 @@ class Invoice {
     private $currentChargeIndex = -1;
     private $currentPrePaidDocIndex = -1;
 
-    public function stackcue() {
+    public function stackcue()
+    {
         $this->currentSection = 'Stackcue';
         return $this;
     }
 
-    public function invoice() {
+    public function invoice()
+    {
         $this->currentSection = 'Invoice';
         return $this;
     }
 
-    public function seller() {
+    public function seller()
+    {
         $this->currentSection = 'Seller';
         return $this;
     }
 
-    public function customer() {
+    public function customer()
+    {
         $this->currentSection = 'Customer';
         return $this;
     }
 
-    public function addDocumentAllowance() {
+    public function addDocumentAllowance()
+    {
         $this->currentAllowanceIndex++;
         $this->data['DocumentAllowances'][$this->currentAllowanceIndex] = [];
         return $this;
     }
 
-    public function addDocumentCharge() {
+    public function addDocumentCharge()
+    {
         $this->currentChargeIndex++;
         $this->data['DocumentCharges'][$this->currentChargeIndex] = [];
         return $this;
     }
 
-    public function addPrePaidDocument() {
+    public function addPrePaidDocument()
+    {
         $this->currentPrePaidDocIndex++;
         $this->data['prePaidDocuments'][$this->currentPrePaidDocIndex] = [];
         return $this;
     }
 
-    public function addLineItem() {
+    public function addLineItem()
+    {
         $this->currentLineItemIndex++;
         $this->data['Lineitems'][$this->currentLineItemIndex] = [];
         return $this;
     }
 
-    public function __call($name, $arguments) {
+    public function __call($name, $arguments)
+    {
         // Check for specific fields that need to retain their exact casing
         $exactFields = ['PIHvalue'];
         if (in_array($name, $exactFields)) {
@@ -76,188 +86,280 @@ class Invoice {
         return $this;
     }
 
-    public function toJson() {
+    public function toJson()
+    {
         return json_encode($this->data, JSON_PRETTY_PRINT);
     }
 
-    public function toArray() {
+    public function toArray()
+    {
         return $this->data;
     }
 
     // Document Allowance Methods
-    public function allowanceReason($value) {
+    public function allowanceReason($value)
+    {
         $this->data['DocumentAllowances'][$this->currentAllowanceIndex]['allowanceReason'] = $value;
         return $this;
     }
 
-    public function allowanceAmount($value) {
+    public function allowanceAmount($value)
+    {
         $this->data['DocumentAllowances'][$this->currentAllowanceIndex]['allowanceAmount'] = $value;
         return $this;
     }
 
-    public function allowanceTaxCategoryID($value) {
+    public function allowanceTaxCategoryID($value)
+    {
         $this->data['DocumentAllowances'][$this->currentAllowanceIndex]['taxCategoryID'] = $value;
         return $this;
     }
 
-    public function allowanceTaxPercentage($value) {
+    public function allowanceTaxPercentage($value)
+    {
         $this->data['DocumentAllowances'][$this->currentAllowanceIndex]['taxPercentage'] = $value;
         return $this;
     }
 
     // Document Charge Methods
-    public function chargeReason($value) {
+    public function chargeReason($value)
+    {
         $this->data['DocumentCharges'][$this->currentChargeIndex]['chargeReason'] = $value;
         return $this;
     }
 
-    public function chargeAmount($value) {
+    public function chargeAmount($value)
+    {
         $this->data['DocumentCharges'][$this->currentChargeIndex]['chargeAmount'] = $value;
         return $this;
     }
 
-    public function chargeTaxCategoryID($value) {
+    public function chargeTaxCategoryID($value)
+    {
         $this->data['DocumentCharges'][$this->currentChargeIndex]['taxCategoryID'] = $value;
         return $this;
     }
 
-    public function chargeTaxPercentage($value) {
+    public function chargeTaxPercentage($value)
+    {
         $this->data['DocumentCharges'][$this->currentChargeIndex]['taxPercentage'] = $value;
         return $this;
     }
 
     // PrePaid Document Methods
-    public function prePaymentDocumentId($value) {
+    public function prePaymentDocumentId($value)
+    {
         $this->data['prePaidDocuments'][$this->currentPrePaidDocIndex]['prePaymentDocumentId'] = $value;
         return $this;
     }
 
-    public function prePaymentDocumentIssueDate($value) {
+    public function prePaymentDocumentIssueDate($value)
+    {
         $this->data['prePaidDocuments'][$this->currentPrePaidDocIndex]['prePaymentDocumentIssueDate'] = $value;
         return $this;
     }
 
-    public function prePaymentDocumentIssueTime($value) {
+    public function prePaymentDocumentIssueTime($value)
+    {
         $this->data['prePaidDocuments'][$this->currentPrePaidDocIndex]['prePaymentDocumentIssueTime'] = $value;
         return $this;
     }
 
-    public function prePaymentCategoryAmount($category, $amount) {
+    public function prePaymentCategoryAmount($category, $amount)
+    {
         $this->data['prePaidDocuments'][$this->currentPrePaidDocIndex]['prePaymentCategoryAmount'][$category] = $amount;
         return $this;
     }
 
     // Line Item Methods
-    public function lineID($value) {
+    public function lineID($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['lineID'] = $value;
         return $this;
     }
 
-    public function invoicedQuantity($value) {
+    public function invoicedQuantity($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['invoicedQuantity'] = $value;
         return $this;
     }
 
-    public function invoicedQuantityUnit($value) {
+    public function invoicedQuantityUnit($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['invoicedQuantityUnit'] = $value;
         return $this;
     }
 
-    public function baseQuantity($value) {
+    public function baseQuantity($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['baseQuantity'] = $value;
         return $this;
     }
 
-    public function currency($value) {
+    public function currency($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['currency'] = $value;
         return $this;
     }
 
-    public function currency2($value) {
+    public function currency2($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['currency2'] = $value;
         return $this;
     }
 
-    public function name($value) {
+    public function name($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['name'] = $value;
         return $this;
     }
 
-    public function categoriesCode($value) {
+    public function categoriesCode($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['categoriesCode'] = $value;
         return $this;
     }
 
-    public function vatPercentage($value) {
+    public function vatPercentage($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['vatPercentage'] = $value;
         return $this;
     }
 
-    public function grossAmount($value) {
+    public function grossAmount($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['grossAmount'] = $value;
         return $this;
     }
 
-    public function priceAllowanceReason($value) {
+    public function priceAllowanceReason($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['priceAllowanceReason'] = $value;
         return $this;
     }
 
-    public function priceAllowanceAmount($value) {
+    public function priceAllowanceAmount($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['priceAllowanceAmount'] = $value;
         return $this;
     }
 
-    public function lineAllowanceMethod($value) {
+    public function lineAllowanceMethod($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['lineAllowanceMethod'] = $value;
         return $this;
     }
 
-    public function itemlineAllowance_UNE_Reason($value) {
+    public function itemlineAllowance_UNE_Reason($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['itemlineAllowance_UNE_Reason'] = $value;
         return $this;
     }
 
-    public function lineAllowanceAmount($value) {
+    public function lineAllowanceAmount($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['lineAllowanceAmount'] = $value;
         return $this;
     }
 
-    public function lineAllowancePercentage($value) {
+    public function lineAllowancePercentage($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['lineAllowancePercentage'] = $value;
         return $this;
     }
 
-    public function baseAmountForLineAllowance($value) {
+    public function baseAmountForLineAllowance($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['baseAmountForLineAllowance'] = $value;
         return $this;
     }
 
-    public function lineChargeMethod($value) {
+    public function lineChargeMethod($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['lineChargeMethod'] = $value;
         return $this;
     }
 
-    public function itemlineCharge_UNE_Reason($value) {
+    public function itemlineCharge_UNE_Reason($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['itemlineCharge_UNE_Reason'] = $value;
         return $this;
     }
 
-    public function lineChargeAmount($value) {
+    public function lineChargeAmount($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['lineChargeAmount'] = $value;
         return $this;
     }
 
-    public function lineChargePercentage($value) {
+    public function lineChargePercentage($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['lineChargePercentage'] = $value;
         return $this;
     }
 
-    public function baseAmountForLineCharge($value) {
+    public function baseAmountForLineCharge($value)
+    {
         $this->data['Lineitems'][$this->currentLineItemIndex]['baseAmountForLineCharge'] = $value;
         return $this;
     }
+
+    public function APIcomplianceInvoiceCheck()
+    {
+
+        $DocType = $this->data['Stackcue']['documentType'];
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => APIUrls::get($DocType),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($this->data),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . EnvVariables::get('STACKCUE_API_ACCESS_TOKEN'),
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+
+    }
+
+    public function APIcomplianceInvoiceCheckAndSubmit()
+    {
+
+        $DocType = $this->data['Stackcue']['documentType'];
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => APIUrls::get($DocType),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($this->data),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . EnvVariables::get('STACKCUE_API_ACCESS_TOKEN'),
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+
+    }
 }
-
-
-

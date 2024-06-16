@@ -1,6 +1,8 @@
 <?php
 namespace Sabith\Zatcaphase2;
 
+use Sabith\Zatcaphase2\APIUrls;
+
 class ComplianceCSID
 {
     private $data = [];
@@ -88,7 +90,7 @@ class ComplianceCSID
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://127.0.0.1:8000/api/compliance',
+            CURLOPT_URL => APIUrls::get('Compliancecsid'),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -96,23 +98,10 @@ class ComplianceCSID
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => '{
-                "email" : "sales@jeem.net.sa",
-                "location" : "Dammam",
-                "companyName" : "Jeem IT",
-                "vatNumber" : "310565828400003",
-                "isRequiredSimplifiedDoc" : true,
-                "isRequiredStandardDoc" : true,
-                "deviceSerialNumber1" : "stackcue",
-                "deviceSerialNumber2" : "ESGUnit",
-                "deviceSerialNumber3" : "9sfgbdb02-665",
-                "regAddress" : "KHOBAR",
-                "businesscategory" : "Software and IT",
-                "otp" : "272482"
-                }',
+            CURLOPT_POSTFIELDS => json_encode($this->data),
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                'Authorization: Bearer 1|qVwZgO9juhnQwCAsNaC943o1yKwAHTS7MTE4PQUJ8d667a1a',
+                'Authorization: Bearer ' . EnvVariables::get('STACKCUE_API_ACCESS_TOKEN'),
             ),
         ));
 
