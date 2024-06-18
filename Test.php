@@ -147,7 +147,7 @@ echo $invoice->APIcomplianceInvoiceCheck();
 echo "<br><br>Compliance Check and submit <br>";
 echo $invoice->APIcomplianceInvoiceCheckAndSubmit();
 
-echo "<br><br>Compliance Check and submit and get PDF A/3<br>";
+//Compliance Check and submit and get PDF A/3
 $invoice->API_PDF_InvoiceCheckAndSubmit([
     "pdfLocation" => __DIR__.'/sampleInvoice.pdf',
     "pdfA3_SaveDirectory" => __DIR__.'/pdfdownloaded',
