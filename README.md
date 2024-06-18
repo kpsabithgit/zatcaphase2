@@ -68,12 +68,14 @@ echo $productioncsid;
 ## Generte Invoice
 ```
 
-$invoice = new Invoice();
-
 $invoice->stackcue()
     ->documentType('StandardInvoice')
-    ->stackcueComplianceIdentifier('d1f4f24e-de77-4a93-ac74-11e9759b82cc') //from above compliancecsid
-    ->stackcueProductionIdentifier('80df268b-24ea-4fa5-904e-f949d155057d'); //from above productioncsid 
+    ->stackcueComplianceIdentifier('d1f4f24e-de77-4a93-ac74-11e9759b82cc')
+    ->stackcueProductionIdentifier('80df268b-24ea-4fa5-904e-f949d155057d')
+    ->qrX(55)
+    ->qrY(120)
+    ->qrSize(150);
+
 
 // Invoice Section
 $invoice->invoice()
@@ -84,8 +86,8 @@ $invoice->invoice()
     ->actualDeliveryDate('2022-09-07')
     ->paymentMeansCode(10)
     ->PIHvalue('NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==')
-    ->referanceInvoiceID('SMI00023') //required only for debit/credit note
-    ->reasonForCreditOrDebitNote('Item Returned'); //required only for debit/credit note
+    ->referanceInvoiceID('SMI00023')
+    ->reasonForCreditOrDebitNote('Item Returned');
 
 // Seller Section
 $invoice->seller()
@@ -138,7 +140,16 @@ $invoice->addPrePaidDocument()
     ->prePaymentCategoryAmount('Z', 0.00)
     ->prePaymentCategoryAmount('O', 0.00);
 
-// Line Item (repeat for all lines in the invoice)
+$invoice->addPrePaidDocument()
+    ->prePaymentDocumentId('124')
+    ->prePaymentDocumentIssueDate('2021-07-31')
+    ->prePaymentDocumentIssueTime('12:28:17')
+    ->prePaymentCategoryAmount('S', 1.00)
+    ->prePaymentCategoryAmount('E', 0.00)
+    ->prePaymentCategoryAmount('Z', 0.00)
+    ->prePaymentCategoryAmount('O', 0.00);
+
+// Line Item
 $invoice->addLineItem()
     ->lineID(1)
     ->invoicedQuantity(1)
@@ -164,6 +175,27 @@ $invoice->addLineItem()
     ->baseAmountForLineCharge(11);
 
 // echo ($invoice->toJson());
+
+echo "<br><br>Compliance Check <br>";
+echo $invoice->APIcomplianceInvoiceCheck();
+
+echo "<br><br>Compliance Check and submit <br>";
+echo $invoice->APIcomplianceInvoiceCheckAndSubmit();
+
+//Compliance Check and submit and get PDF A/3
+$invoice->API_PDF_InvoiceCheckAndSubmit([
+    "pdfLocation" => __DIR__.'/sampleInvoice.pdf',
+    "pdfA3_SaveDirectory" => __DIR__.'/pdfdownloaded',
+    'pdfA3_FileName' => 'sampleInvoicePDFA3.pdf'
+]);
+
+echo "<br><br>PDF/A-3 file save status<br>";
+
+echo $invoice->isfileSaved();
+
+
+echo "<br><br>stackcue header response<br>";
+echo $invoice->getStackcueHeader();
 ```
 ## Compliance Invoice Check
 ```
