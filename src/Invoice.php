@@ -1,6 +1,8 @@
 <?php
 namespace Sabith\Zatcaphase2;
 
+use CURLFILE;
+
 class Invoice
 {
     private $data = [
@@ -13,7 +15,7 @@ class Invoice
         'prePaidDocuments' => [],
         'Lineitems' => [],
     ];
-
+    private $stackcueHeader, $isfileSaved;
     private $currentSection;
     private $currentLineItemIndex = -1;
     private $currentAllowanceIndex = -1;
@@ -304,6 +306,16 @@ class Invoice
         return $this;
     }
 
+    public function getStackcueHeader()
+    {
+        return $this->stackcueHeader;
+    }
+
+    public function isfileSaved()
+    {
+        return $this->isfileSaved;
+    }
+
     public function APIcomplianceInvoiceCheck()
     {
 
@@ -362,4 +374,80 @@ class Invoice
         return $response;
 
     }
+
+    public function API_PDF_InvoiceCheckAndSubmit($fileLocations)
+    {
+
+        $DocType = $this->data['Stackcue']['documentType'];
+
+        $pathToSave = $fileLocations['pdfA3_SaveDirectory'];
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => APIUrls::get($DocType),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('data' => "'" . base64_encode($this->toJson()) . "'", 'file' => new CURLFILE($fileLocations['pdfLocation'])),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . EnvVariables::get('STACKCUE_API_ACCESS_TOKEN'),
+            ),
+        ));
+
+        // Callback function to capture headers
+        curl_setopt($curl, CURLOPT_HEADERFUNCTION,
+            function ($curl, $header) use (&$headers) {
+                $len = strlen($header);
+                $header = explode(':', $header, 2);
+                if (count($header) < 2) {
+                    return $len; // ignore invalid headers
+                }
+                $headers[strtolower(trim($header[0]))] = trim($header[1]);
+                return $len;
+            }
+        );
+
+        $response = curl_exec($curl);
+
+        $stackcueHeader_json = isset($headers['stackcue-header']) ? $headers['stackcue-header'] : null;
+
+        // echo "Stackcue-Header: $stackcueHeader\n";
+        $this->stackcueHeader = $stackcueHeader_json;
+
+        curl_close($curl);
+        //echo $response;
+        if ($stackcueHeader_json != null) {
+            $stackcueHeader_arr = json_decode($stackcueHeader_json, true);
+
+            $zatcaSubmissionStatus = isset($stackcueHeader_arr['stackcueHelper']['zatcaSubmissionStatus']) ? ($stackcueHeader_arr['stackcueHelper']['zatcaSubmissionStatus']) : null;
+            if ($zatcaSubmissionStatus != null && $zatcaSubmissionStatus == 1) {
+                // Create directory if it does not exist
+                if (!file_exists($pathToSave)) {
+                    mkdir($pathToSave, 0777, true);
+                }
+                // Set the file path including the file name
+                $file_path = $pathToSave . '/' . $fileLocations['pdfA3_FileName'];
+                $file_handle = fopen($file_path, 'w');
+                // Initialize cURL session
+
+                //conditions if fle saved or not
+                $fileSave = fwrite($file_handle, $response);
+                if ($fileSave === false) {
+                    $this->isfileSaved = "false";
+                } elseif ($fileSave == strlen($response)) {
+                    $this->isfileSaved = "true";
+                }
+                $this->stackcueHeader = $stackcueHeader_json;
+
+            }
+
+        }
+
+    }
+
 }

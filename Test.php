@@ -36,7 +36,11 @@ $invoice = new Invoice();
 $invoice->stackcue()
     ->documentType('StandardInvoice')
     ->stackcueComplianceIdentifier('d1f4f24e-de77-4a93-ac74-11e9759b82cc')
-    ->stackcueProductionIdentifier('80df268b-24ea-4fa5-904e-f949d155057d');
+    ->stackcueProductionIdentifier('80df268b-24ea-4fa5-904e-f949d155057d')
+    ->qrX(55)
+    ->qrY(120)
+    ->qrSize(150);
+
 
 // Invoice Section
 $invoice->invoice()
@@ -142,3 +146,20 @@ echo $invoice->APIcomplianceInvoiceCheck();
 
 echo "<br><br>Compliance Check and submit <br>";
 echo $invoice->APIcomplianceInvoiceCheckAndSubmit();
+
+echo "<br><br>Compliance Check and submit and get PDF A/3<br>";
+$invoice->API_PDF_InvoiceCheckAndSubmit([
+    "pdfLocation" => __DIR__.'/sampleInvoice.pdf',
+    "pdfA3_SaveDirectory" => __DIR__.'/pdfdownloaded',
+    'pdfA3_FileName' => 'sampleInvoicePDFA3.pdf'
+]);
+
+echo "<br><br>PDF/A-3 file save status<br>";
+
+echo $invoice->isfileSaved();
+
+
+echo "<br><br>stackcue header response<br>";
+echo $invoice->getStackcueHeader();
+
+
