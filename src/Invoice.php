@@ -442,6 +442,9 @@ class Invoice
                 } elseif ($fileSave == strlen($response)) {
                     $this->isfileSaved = "true";
                 }
+                else{
+                    $this->isfileSaved = $fileSave;
+                }
                 $this->stackcueHeader = $stackcueHeader_json;
 
             }

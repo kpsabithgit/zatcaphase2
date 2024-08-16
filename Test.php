@@ -26,7 +26,7 @@ echo $compliancecsid->sendAPIrequest();
 
 echo "<br><br> Generting Production CSID<br>";
 //stackcueComplianceIdentifier from above method used here
-$stackcueComplianceIdentifier = '74e88cd4-fc4a-46f9-afee-b2c4cb4d034a';
+$stackcueComplianceIdentifier = '3fb0acc9-27da-458a-a9a1-cc9583d351ad';
 $productioncsid = ProductionCSID::sendAPIrequest($stackcueComplianceIdentifier);
 echo $productioncsid;
 
@@ -36,8 +36,8 @@ $invoice = new Invoice();
 
 $invoice->stackcue()
     ->documentType('StandardInvoice')
-    ->stackcueComplianceIdentifier('d1f4f24e-de77-4a93-ac74-11e9759b82cc')
-    ->stackcueProductionIdentifier('80df268b-24ea-4fa5-904e-f949d155057d')
+    ->stackcueComplianceIdentifier('3fb0acc9-27da-458a-a9a1-cc9583d351ad')
+    ->stackcueProductionIdentifier('0c2f3b77-e5a8-407e-81f4-63cc03e8db1f')
     ->qrX(55)
     ->qrY(120)
     ->qrSize(150);
@@ -65,7 +65,7 @@ $invoice->seller()
     ->citySubdivisionName('Riyad')
     ->cityName('Riyadh')
     ->postalZone('23333')
-    ->companyID('311783645100003')
+    ->companyID('399999999900003')
     ->registrationName('Acme Widgets LTD');
 
 // Customer Section
@@ -79,7 +79,7 @@ $invoice->customer()
     ->cityName('Dammam')
     ->postalZone('12222')
     ->country('SA')
-    ->companyID('399999999900003')
+    ->companyID('399999999400003')
     ->registrationName('Acme Widgets LTD 2');
 
 // Document Allowances
@@ -162,5 +162,6 @@ echo $invoice->isfileSaved();
 
 echo "<br><br>stackcue header response<br>";
 echo $invoice->getStackcueHeader();
+
 
 
