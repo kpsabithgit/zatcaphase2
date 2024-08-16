@@ -67,6 +67,13 @@ class ComplianceCSID
         return $this;
 
     }
+    
+    public function commonName($value)
+    {
+        $this->data['commonName'] = $value;
+        return $this;
+
+    }
     public function businesscategory($value)
     {
         $this->data['businesscategory'] = $value;
@@ -86,7 +93,6 @@ class ComplianceCSID
 
     public function sendAPIrequest()
     {
-
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -101,7 +107,7 @@ class ComplianceCSID
             CURLOPT_POSTFIELDS => json_encode($this->data),
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                'Authorization: Bearer ' . EnvVariables::get('STACKCUE_API_ACCESS_TOKEN'),
+                'Authorization: Bearer '.EnvVariables::get('STACKCUE_API_ACCESS_TOKEN'),
             ),
         ));
 
