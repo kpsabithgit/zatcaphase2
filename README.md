@@ -41,6 +41,7 @@ use Sabith\Zatcaphase2\ProductionCSID;
 
 $compliancecsid = new ComplianceCSID;
 $compliancecsid->email("sales@jeem.net.sa")
+    ->commonName("Jeem")
     ->location("Dammam")
     ->companyName("Jeem IT")
     ->vatNumber("310565828400003")

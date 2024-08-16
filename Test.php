@@ -9,6 +9,7 @@ echo "Generting Compliance CSID<br> ";
 
 $compliancecsid = new ComplianceCSID;
 $compliancecsid->email("sales@jeem.net.sa")
+    ->commonName("Jeem")
     ->location("Dammam")
     ->companyName("Jeem IT")
     ->vatNumber("310565828400003")
