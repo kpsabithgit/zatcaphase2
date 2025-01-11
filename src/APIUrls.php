@@ -16,8 +16,8 @@ class APIUrls
             'SimplifiedDebitNote' => 'simplified-debitnote',
             'StandardCompliance' => 'standard-compliance',
             'StandardInvoice' => 'standard-invoice',
-            'StandardCreditnote' => 'standard-creditnote',
-            'StandardDebitnote' => 'standard-debitnote',
+            'StandardCreditNote' => 'standard-creditnote',
+            'StandardDebitNote' => 'standard-debitnote',
         ];
         $baseUrl = EnvVariables::get('STACKCUE_API_END_POINT_BASE_URL');
         $url = $baseUrl . '/api/' . $data[$key];
