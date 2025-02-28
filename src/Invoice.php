@@ -1,4 +1,5 @@
 <?php
+
 namespace Sabith\Zatcaphase2;
 
 use CURLFILE;
@@ -321,10 +322,16 @@ class Invoice
 
         $DocType = $this->data['Stackcue']['documentType'];
 
+        if ($this->containsSimplified($DocType) == true) {
+            $DocType_for_url = 'Simplifiedcompliance';
+        } else {
+            $DocType_for_url = 'StandardCompliance';
+        }
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => APIUrls::get($DocType),
+            CURLOPT_URL => APIUrls::get($DocType_for_url),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -343,7 +350,12 @@ class Invoice
 
         curl_close($curl);
         return $response;
+    }
 
+    function containsSimplified($string)
+    {
+        // Case-insensitive search for the exact spelling "simplified"
+        return (stripos($string, 'simplified') !== false);
     }
 
     public function APIcomplianceInvoiceCheckAndSubmit()
@@ -372,7 +384,6 @@ class Invoice
 
         curl_close($curl);
         return $response;
-
     }
 
     public function API_PDF_InvoiceCheckAndSubmit($fileLocations)
@@ -400,7 +411,9 @@ class Invoice
         ));
 
         // Callback function to capture headers
-        curl_setopt($curl, CURLOPT_HEADERFUNCTION,
+        curl_setopt(
+            $curl,
+            CURLOPT_HEADERFUNCTION,
             function ($curl, $header) use (&$headers) {
                 $len = strlen($header);
                 $header = explode(':', $header, 2);
@@ -441,16 +454,11 @@ class Invoice
                     $this->isfileSaved = "false";
                 } elseif ($fileSave == strlen($response)) {
                     $this->isfileSaved = "true";
-                }
-                else{
+                } else {
                     $this->isfileSaved = $fileSave;
                 }
                 $this->stackcueHeader = $stackcueHeader_json;
-
             }
-
         }
-
     }
-
 }
