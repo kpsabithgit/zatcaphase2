@@ -3,6 +3,7 @@
 namespace Sabith\Zatcaphase2;
 
 use Dotenv\Dotenv;
+use App\Http\Controllers\Einvoicing\ZatcaController;
 
 class EnvVariables
 {
@@ -25,6 +26,12 @@ class EnvVariables
                 throw new \Exception("Configuration file not found or invalid: $configFile");
             }
             return $config[$key];
+        } else if ($_ENV['STACKCUE_API_CONFIG_METHOD'] == 'controller') {
+            $configuration = ZatcaController::getConfiguration();
+            return $configuration[$key];
+
+
         }
+        
     }
 }
