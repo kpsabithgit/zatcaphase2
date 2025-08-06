@@ -307,6 +307,12 @@ class Invoice
         return $this;
     }
 
+    public function taxExemptionReasonCode($value)
+    {
+        $this->data['Lineitems'][$this->currentLineItemIndex]['taxExemptionReasonCode'] = $value;
+        return $this;
+    }
+
     public function getStackcueHeader()
     {
         return $this->stackcueHeader;
